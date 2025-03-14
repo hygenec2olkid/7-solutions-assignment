@@ -92,9 +92,10 @@ function App() {
   return (
     <div className="flex justify-center items-center w-screen h-screen">
       <div
-        className={`w-[70vw] h-[80vh] grid grid-cols-${
-          typeAmount.size + 1
-        } gap-3`}
+        style={{
+          gridTemplateColumns: `repeat(${typeAmount.size + 1}, minmax(0, 1fr))`,
+        }}
+        className="w-[70vw] h-[80vh] grid gap-3"
       >
         <div className="flex flex-col gap-3 p-2 max-h-full overflow-y-auto">
           {pools.map((item, index) => (
