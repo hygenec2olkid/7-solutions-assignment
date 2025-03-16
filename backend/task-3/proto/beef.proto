@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package beef;
+
+option go_package = "beefpb/";
+
+
+service BeefService {
+  rpc GetBeef (BeefRequest) returns (BeefResponse);
+}
+
+message BeefRequest {}
+
+message BeefResponse {
+  string text = 1;
+}
