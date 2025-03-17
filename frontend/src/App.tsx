@@ -1,6 +1,15 @@
+import useAxios from "axios-hooks";
 import { useState } from "react";
+import { identifyUser } from "./util/user";
+import { User } from "./interface/user";
 
 function App() {
+  const [{ data }] = useAxios<{ users: User[] }>("/");
+  if (data?.users) {
+    const identifyData = identifyUser(data.users);
+    console.log(identifyData);
+  }
+
   const initialPools = [
     {
       type: "Fruit",
