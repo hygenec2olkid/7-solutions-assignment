@@ -6,4 +6,6 @@ backend-assignment: https://github.com/7-solutions/backend-challenge/tree/main?t
 # frontend 
 - pnpm install
 - pnpm dev
+- see reselut at: https://7-solutions-assignment-kzhg.vercel.app/
+- task-2 see in console.log()
 
