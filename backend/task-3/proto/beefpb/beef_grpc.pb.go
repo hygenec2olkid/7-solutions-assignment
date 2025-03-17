@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BeefService_GetBeef_FullMethodName = "/beef.BeefService/GetBeef"
+	BeefService_FetchBeef_FullMethodName = "/beef.BeefService/FetchBeef"
 )
 
 // BeefServiceClient is the client API for BeefService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BeefServiceClient interface {
-	GetBeef(ctx context.Context, in *BeefRequest, opts ...grpc.CallOption) (*BeefResponse, error)
+	FetchBeef(ctx context.Context, in *BeefRequest, opts ...grpc.CallOption) (*BeefResponse, error)
 }
 
 type beefServiceClient struct {
@@ -37,10 +37,10 @@ func NewBeefServiceClient(cc grpc.ClientConnInterface) BeefServiceClient {
 	return &beefServiceClient{cc}
 }
 
-func (c *beefServiceClient) GetBeef(ctx context.Context, in *BeefRequest, opts ...grpc.CallOption) (*BeefResponse, error) {
+func (c *beefServiceClient) FetchBeef(ctx context.Context, in *BeefRequest, opts ...grpc.CallOption) (*BeefResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BeefResponse)
-	err := c.cc.Invoke(ctx, BeefService_GetBeef_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, BeefService_FetchBeef_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *beefServiceClient) GetBeef(ctx context.Context, in *BeefRequest, opts .
 // All implementations must embed UnimplementedBeefServiceServer
 // for forward compatibility.
 type BeefServiceServer interface {
-	GetBeef(context.Context, *BeefRequest) (*BeefResponse, error)
+	FetchBeef(context.Context, *BeefRequest) (*BeefResponse, error)
 	mustEmbedUnimplementedBeefServiceServer()
 }
 
@@ -62,8 +62,8 @@ type BeefServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedBeefServiceServer struct{}
 
-func (UnimplementedBeefServiceServer) GetBeef(context.Context, *BeefRequest) (*BeefResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBeef not implemented")
+func (UnimplementedBeefServiceServer) FetchBeef(context.Context, *BeefRequest) (*BeefResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchBeef not implemented")
 }
 func (UnimplementedBeefServiceServer) mustEmbedUnimplementedBeefServiceServer() {}
 func (UnimplementedBeefServiceServer) testEmbeddedByValue()                     {}
@@ -86,20 +86,20 @@ func RegisterBeefServiceServer(s grpc.ServiceRegistrar, srv BeefServiceServer) {
 	s.RegisterService(&BeefService_ServiceDesc, srv)
 }
 
-func _BeefService_GetBeef_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BeefService_FetchBeef_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BeefRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BeefServiceServer).GetBeef(ctx, in)
+		return srv.(BeefServiceServer).FetchBeef(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: BeefService_GetBeef_FullMethodName,
+		FullMethod: BeefService_FetchBeef_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BeefServiceServer).GetBeef(ctx, req.(*BeefRequest))
+		return srv.(BeefServiceServer).FetchBeef(ctx, req.(*BeefRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -112,8 +112,8 @@ var BeefService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*BeefServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetBeef",
-			Handler:    _BeefService_GetBeef_Handler,
+			MethodName: "FetchBeef",
+			Handler:    _BeefService_FetchBeef_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

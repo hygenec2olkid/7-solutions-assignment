@@ -1,4 +1,4 @@
-module task-3
+module github.com/hygenec2olkid/7-solutions-assignment/backend
 
 go 1.22.2
 

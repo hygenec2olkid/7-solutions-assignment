@@ -6,7 +6,7 @@ option go_package = "beefpb/";
 
 
 service BeefService {
-  rpc GetBeef (BeefRequest) returns (BeefResponse);
+  rpc FetchBeef (BeefRequest) returns (BeefResponse);
 }
 
 message BeefRequest {}
