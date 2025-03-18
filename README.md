@@ -7,5 +7,5 @@ backend-assignment: https://github.com/7-solutions/backend-challenge/tree/main?t
 - pnpm install
 - pnpm dev
 - see reselut at: https://7-solutions-assignment-kzhg.vercel.app/
-- task-2 see in console.log()
+- task 2. Create data from API show in console.log()
 
