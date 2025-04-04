@@ -1,5 +1,5 @@
 import useAxios from "axios-hooks";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { identifyUser } from "./util/user";
 import { User } from "./interface/user";
 
@@ -64,13 +64,19 @@ function App() {
       return { ...acc, [cur]: [] };
     }, {} as Record<string, string[]>)
   );
+  const timeoutRefID = useRef<Record<string, NodeJS.Timeout>>({});
 
   const handleMoveToOwnType = (item: { type: string; name: string }) => {
     const { type, name } = item;
     setPools((prev) => prev.filter((p) => p.name !== name));
     setCategorized((prev) => ({ ...prev, [type]: [...prev[type], name] }));
 
-    setTimeout(() => {
+    const timeoutID = getTimeoutID(type, name);
+    timeoutRefID.current[name] = timeoutID;
+  };
+
+  const getTimeoutID = (type: string, name: string) => {
+    return setTimeout(() => {
       //prevent add duplicate item back in pools
       setPools((prev) => {
         //make sure pools not have item
@@ -87,10 +93,38 @@ function App() {
         ...prev,
         [type]: [...prev[type].filter((p) => p !== name)],
       }));
+
+      delete timeoutRefID.current[name];
     }, 5000);
   };
 
+  const getTypeByName = (name: string) => {
+    return Object.keys(categorized).find((type) => {
+      if (categorized[type].includes(name)) {
+        return type;
+      }
+    });
+  };
+
+  const resetCooldown = () => {
+    //clear all timeouts and reset cooldown
+    Object.keys(timeoutRefID.current).forEach((key) => {
+      clearTimeout(timeoutRefID.current[key]);
+      const type = getTypeByName(key);
+      if (!type) return;
+
+      const newTimeoutID = getTimeoutID(type, key);
+      timeoutRefID.current[key] = newTimeoutID;
+    });
+  };
+
   const handleGoBack = (type: string, item: string) => {
+    if (timeoutRefID.current[item]) {
+      clearTimeout(timeoutRefID.current[item]);
+      delete timeoutRefID.current[item];
+      resetCooldown();
+    }
+
     setPools((prev) => [...prev, { type: type, name: item }]);
     setCategorized((prev) => ({
       ...prev,
